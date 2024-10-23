@@ -1,18 +1,3 @@
-<script lang="ts">
-  import { enhance } from '$app/forms'
-  export let form
-
-  let file: File | null = null
-
-  function onChange(
-    event: Event & { currentTarget: EventTarget & HTMLInputElement },
-  ) {
-    file = (event.target as HTMLInputElement)?.files?.[0] ?? null
-  }
-  $: buttonClass = file
-    ? 'border-black bg-black text-white hover:bg-white hover:text-black'
-    : 'cursor-not-allowed border-gray-200 bg-gray-100 text-gray-400'
-</script>
 
 <main class="text-white relative flex min-h-screen flex-col items-center justify-center">
   <h1
@@ -28,12 +13,6 @@
       action="?/upload"
       method="POST"
       enctype="multipart/form-data"
-      use:enhance={() => {
-        return async ({ update }) => {
-          file = null
-          update({ reset: true })
-        }
-      }}
     >
       <div>
         <div class="space-y-1 mb-4 ">
@@ -46,7 +25,7 @@
           for="image-upload"
           class=" group relative mt-2 flex h-72 cursor-pointer flex-col items-center justify-center rounded-md border border-gray-300 shadow-sm transition-all hover:bg-gray-900"
         >
-          {#if !file}
+          
             <div class="absolute z-[5] h-full w-full rounded-md bg-transparent">
               <div
                 class={`${''} bg-transparent absolute z-[3] flex h-full w-full flex-col items-center justify-center rounded-md px-10 transition-all `}
@@ -78,9 +57,7 @@
                 <span class="sr-only">Photo upload</span>
               </div>
             </div>
-          {:else}
-            <p>{file.name}</p>
-          {/if}
+
         </label>
         <div class="bg-transparent mt-1 flex rounded-md shadow-sm">
           <input
@@ -89,33 +66,18 @@
             type="file"
             accept="image/*"
             class="sr-only"
-            on:change={onChange}
+            
           />
         </div>
       </div>
 
       <button
-        disabled={!file}
+
         class="bg-transparent flex h-10 w-full items-center justify-center rounded-md border text-sm transition-all focus:outline-none"
       >
         <p class="text-sm">Confirm upload</p>
       </button>
-      {#if form && !file}
-        <div class="p-2">
-          <p class="font-semibold text-gray-900">File uploaded!</p>
-          <p class="mt-1 text-sm text-gray-500">
-            Your file has been uploaded to{' '}
-            <a
-              class="font-medium text-gray-900 underline"
-              href={form.uploaded}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {form.uploaded}
-            </a>
-          </p>
-        </div>
-      {/if}
+
     </form>
   </div>
  
